@@ -1,3 +1,3 @@
 # gojs
 
-gojs playground
+js playground

@@ -4,8 +4,78 @@
         <meta charset="utf-8"/>
     </head>
     <body>
+    	<!--
+        		html comment
+        	-->
         <script>
-            alert('Hello world');
+        	//this is javascript comment
+            /*
+            alert('Hello world')
+            alert("Hello world" + 'catenate')
+            alert(3+5*2)
+            alert('length'.length)
+
+
+            
+
+            var p = prompt(" 두 숫자를 입력하세요 : ").split(" ");
+            if (p[0]==='cjh'){
+            	console.log('it\'s same')
+            	console.log(p[1])
+            }
+            else{
+            	console.log('it\'s not same')
+            	console.log(p[1])
+            	console.log(p[2])
+            }
+		function numbering(){
+		    i = 0;
+		    while(i < 100){
+		        document.write(i);
+		        document.writeln(i);	//doesn't work
+		        document.write("<br>");
+		        i += parseInt(p[1]);
+		    }   
+		}
+		numbering();
+		numbering();
+		numbering();
+
+		
+		var pfunc = function(a, b){
+			return a+b
+		}
+
+		alert(pfunc(3,5))
+
+		
+
+		var arr = ['comeon'+'hey','brother']
+		console.log(typeof arr)	//object
+		console.log(typeof arr[0])	//string
+		console.log(typeof arr[1])
+		document.write(arr[0]);
+		document.write('<br>');
+		document.write(arr[2]);	//undefined
+		document.write('<br>');
+		document.write(arr[1]);
+
+		*/
+		document.write('lowercase'.toUpperCase());
+		document.write('<br>');
+		var testarr = ['mon', 'tue', 'wed'];
+		testarr.push('thu');
+		testarr = testarr.concat(['fri', 'sat', 'sun']);
+		testarr.unshift('last sun');
+		//testarr.splice(2, 4, '---'); //last sun,mon,---,sat,sun
+		document.write(testarr)
+		document.write('<br>');
+		
+		testarr.shift();
+		
+		testarr.reverse();
+		reverse
+		alert(testarr);
         </script>
         how about this?
     </body>
