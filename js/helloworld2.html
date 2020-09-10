@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+    	<!--
+        		html comment
+        	-->
+        <script>
+
+        	let struct_test = {
+        		name: 'test struct',
+        		owner: 'cjh',
+        		number: 1,
+        		cb : func_with_str_arg
+        	}
+
+			let struct_test2 = {
+       			name: 'test struct2',
+       			owner: 'cjh',
+       			number: 2,
+       			/* Error : Cannot access 'funcvar' before initialization (when use let funcvar = ...) */
+       			/* if funcvar is defined with var ( var funcvar = function(struct){...} ), it works
+       			*/
+       			cb : funcvar /* but not yet initailized : undefined, will not updated when funcvar will be defined */
+       		}        		
+
+        	document.write(struct_test)
+        	document.write(struct_test2)
+        	document.write(struct_test.owner)
+        	//console.log(struct_test)
+
+
+        	/*it's function declaration*/
+        	function func_with_str_arg(struct){
+        		let {number, owner, name} = struct
+        		/* undefined */
+        		/* let {a, b, c} = struct */
+        		/* console.log(a,b,c) */
+        		let stv = struct
+        		console.log(number, owner, name)
+        		
+        		console.log(stv)
+
+        	}
+
+        	/* it's function expression */
+        	/* variable funcvar is defined here, although it is declared on top */
+        	var funcvar = function(struct){
+        		let {number, owner, name, cb} = struct
+
+        		console.log(cb); /* undefined */
+        		console.log('it\'s function expression')
+        		console.log(number, owner, name)
+        	}
+
+        	console.log(funcvar)
+        	func_with_str_arg(struct_test)
+        	funcvar(struct_test2)
+
+
+
+
+        </script>
+
+        plain text
+
+    </body>
+</html>

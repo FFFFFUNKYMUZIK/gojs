@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+    	<!--
+        		html comment
+        	-->
+        <script>
+
+            let st = {
+                a : 1,
+                b : 1
+            }
+
+            st.a = 2
+            st.b = 3
+
+            console.log(st)
+            console.log(st.a)
+            console.log(st.b)
+
+            /* getter & setter test */
+
+            let st2 = {
+                /* same func&var name -> inf loop of function get when query st2.a */
+                v_a : 1,
+                v_b : 1,
+                
+                get a(){
+                    console.log('get a function is called!')
+                    return this.v_a;
+                },
+
+                set a(v){
+                    console.log('set a function is called!')
+                    this.v_a = v
+                }
+            }
+
+            console.log(st2.a)
+            st2.a=30
+            console.log(st2.a) 
+
+            /* list of object */
+
+            let objlist = [{key : 'value'}, {key2 : 'value2'}]
+            console.log(objlist[0])
+
+            /* works fine */
+            objlist.push({key:'value', other:'format'})
+            console.log(objlist[2])
+
+            console.log(objlist.length)
+
+            for (let i = 0;i<objlist.length;i++){
+                console.log(objlist[i].key)
+            }
+
+            let sobj = objlist[2]
+            console.log(Object.entries(sobj));
+            console.log(Object.keys(sobj));
+            console.log(Object.values(sobj));
+            //console.log(sobj[key])
+            console.log(sobj.key)
+
+            for (let key in sobj){
+
+                console.log(key)
+                console.log(`${key}`)
+                console.log(`${sobj[key]}`)
+            }
+
+
+            //array function
+
+            objlist.forEach(obj => {
+                console.log(obj)
+            });
+
+            let num_arr = [1,2,3,4,5]
+            let squared = num_arr.map(n => n * n)
+
+            /* array type */
+            console.log(squared)
+
+            console.log(squared.indexOf(9)) /* 2 */
+
+            let objidx = objlist.findIndex(st => st.key === 'value')
+            console.log(objidx) /* 0 */
+
+            /* remove elements
+            //objlist.splice(objidx, 1);            
+            */
+            
+            let objlist_filtered = objlist.filter(st => st.key === 'value')
+            console.log(objlist_filtered)
+
+            let shifted = squared.shift()
+            console.log(shifted)
+            console.log(squared)
+            //1, [4 9 16 25]
+
+            shifted = squared.pop()
+            console.log(shifted)
+            console.log(squared)
+            //25, [4, 9, 16]
+
+            squared.unshift(shifted)
+            console.log(squared)
+            //[25, 4, 9, 16]
+
+            console.log(squared.join(', '/*delimeter*/))
+            //'25, 4, 9, 16' : string type
+
+            //argument must be ordered : (accumulator, current, index, array, N/A..)
+            let avg = squared.reduce((acc, current, index, array, test) =>{
+                //console.log(test) /* undefined */
+                if (index === array.length -1){
+                    return (acc + current) / array.length                    
+                }
+
+                return acc + current
+            }, 0)
+
+            console.log(avg)
+            /* 13.5 */
+
+
+            let testarr = [1,2,3,5,10,20,30,40,50,60]
+
+            /*count elements bigger than ten */
+            let res = testarr.reduce((acc, current) =>{
+                if (current > 10){
+                    acc++;
+                }
+                return acc;
+            }, 0)
+
+            console.log(res)
+
+        </script>
+
+        plain text
+
+    </body>
+</html>
