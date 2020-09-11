@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+    	<!--
+        		html comment
+        	-->
+        <script>
+
+            
+            /* <= ES5(Ecma Scripts) */
+            function Animal(type, name, sound) {
+                this.type = type
+                this.name = name
+                this.sound = sound
+                /*
+                this.say = function() {
+                    console.log(this.sound)
+                }
+                this.introduce = function(){
+                    console.log('my name is ', this.name)
+                    console.log('I\'m ', this.type)
+                }
+                */
+                /* normal variable is preferred*/
+                /*
+                this.shared = 'shared_key_construct'
+                */
+            }
+
+            //prototype function
+            Animal.prototype.say = function() {
+                    console.log(this.sound)
+                    console.log(this.shared)
+               }
+
+            Animal.prototype.introduce = function(){
+                    console.log('my name is ', this.name)
+                    console.log('I\'m ', this.type)
+               }
+            Animal.prototype.shared = 'shared_key'
+
+
+            /*
+            let dog = new Animal('dog', 'choco', 'bark')
+            let cat = new Animal('cat', 'hoya', 'miao')
+
+            dog.introduce()
+            dog.say()
+
+            cat.introduce()
+            cat.say()
+            */
+
+            /* inheritance */
+
+            function Dog(name){
+                Animal.call(this, 'dog', name, 'bark')
+            }
+            Dog.prototype = Animal.prototype;
+
+            function Cat(name){
+                Animal.call(this, 'cat', name, 'miao')
+            }
+            Cat.prototype = Animal.prototype;
+
+            let dog = new Dog('choco');
+            let cat = new Cat('hoya');
+
+            dog.introduce()
+            dog.say()
+
+            cat.introduce()
+            cat.say()
+
+
+        </script>
+
+        plain text
+
+    </body>
+</html>
