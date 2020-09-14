@@ -36,9 +36,11 @@
 
             const test_promise = new Promise((resolve, reject) =>{
                 setTimeout(() =>{
-                    //resolve(1);
+                    resolve(1);
+                    /*
                     console.log('throw error!')
                     reject(new Error());
+                    */
 
                 }, 1)
             })
@@ -58,12 +60,16 @@
 
             take_break();
 
+            /*
             test_promise.then(n =>{
                 console.log(n)
             })
             .catch(error =>{
                 console.log(error)
             })
+            */
+            console.log(test_promise.then(n=>{console.log(n)}))
+            console.log('test_promise then return')
 
 
             function increaseAndPrint(n) {
@@ -83,6 +89,7 @@
             }
 
 /*
+            //then always return Promise object 
             increaseAndPrint(0)
               .then(increaseAndPrint)
               .then(increaseAndPrint)
@@ -98,6 +105,40 @@
               console.log(increaseAndPrint(0).then(increaseAndPrint).catch(e => {
                 console.error(e);
               }))
+
+
+              const w1 = async() => {
+                await sleep(1000);
+                return 'w1res';
+              }
+              const w2 = async() => {
+                await sleep(2000);
+                return 'w2res';
+              }
+              const w3 = async() => {
+                /*
+                await sleep(3000);
+                return 'w3res';
+                */
+                await sleep(3000);
+                const err = new Error();
+                throw err;
+              }
+
+
+            async function process(){
+                const res = await Promise.all([w1(), w2(), w3()])
+                console.log(res)
+            }
+
+            async function process_race(){
+                const res = await Promise.race([w1(), w2(), w3()])
+                console.log(res)
+            }
+
+            process();
+            process_race();
+
 
         </script>
 
