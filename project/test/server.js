@@ -45,8 +45,12 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'html')));
 app.get('/', (req,res) =>{
-	res.send('Hello World!');
-})
+	res.sendFile(path.join(__dirname, 'html', 'main.html'));
+});
+app.get('/about', (req,res) =>{
+	res.sendFile(path.join(__dirname, 'html', 'about.html'));
+});
+
 app.listen(port, host, () => {
 	console.log(`Express server listen : http://${host}:${port}/`);
 })
