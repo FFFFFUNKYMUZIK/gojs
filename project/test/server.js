@@ -1,11 +1,12 @@
 const host = '127.0.0.1'
 const port = 8080
 
-/*
+
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
 
+/*
 server = http.createServer((req, res) => {
   console.log('receive request!');
    const path = url.parse(req.url, true).pathname;
@@ -42,14 +43,41 @@ server.listen(port, host, (req,res) =>{
 const express = require('express');
 const path = require('path');
 const app = express();
+const router = require('./route.js');
+
+/*
+app.use(express.static(path.join(__dirname, 'html')));
+
+app.use((req, res, next) =>{
+	console.log('custom middleware');
+	next();
+})
+app.use('/', router)
+
+app.use((req, res, next) => { // 404 처리 부분
+  res.status(404).send('일치하는 주소가 없습니다!');
+  next(new Error());
+});
+app.use((err, req, res, next) => { // 에러 처리 부분
+  console.error(err.stack); // 에러 메시지 표시
+  res.status(500).send('서버 에러!'); // 500 상태 표시 후 에러 메시지 전송
+});
+
+app.listen(port, host, () => {
+	console.log(`Express server listen : http://${host}:${port}/`);
+})
+
+*/
+
+const db = require('./db.js');
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'pug'));
+
+db();
 
 app.use(express.static(path.join(__dirname, 'html')));
-app.get('/', (req,res) =>{
-	res.sendFile(path.join(__dirname, 'html', 'main.html'));
-});
-app.get('/about', (req,res) =>{
-	res.sendFile(path.join(__dirname, 'html', 'about.html'));
-});
+app.use('/', router);
 
 app.listen(port, host, () => {
 	console.log(`Express server listen : http://${host}:${port}/`);
