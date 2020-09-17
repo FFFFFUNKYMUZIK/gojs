@@ -21,6 +21,10 @@ router.get('/about', (req, res) => {
   res.render('about'); // (4)
 });
 
+router.get('/user/:name', (req, res) =>{
+	res.json({name : req.params.name});		
+});
+
 router.get('/:name', (req, res) =>{
 	console.log('request for username : ', req.params.name);
 
@@ -28,6 +32,7 @@ router.get('/:name', (req, res) =>{
 		
 		if (err){
 			console.error(err.stack);
+			next(err);
 			return;
 		} else if (user.length > 0){
 			console.log('user already exists');
@@ -45,5 +50,16 @@ router.get('/:name', (req, res) =>{
 	})
 	
 })
+
+router.post('/user', (req, res) => {
+	console.log('post request! ');
+  User.create({ name: req.body.name }, (err, res) => {
+    if (err) {
+      return next(err);
+    }
+    console.log('res: ',res);
+    res.json(res.data);
+  });
+});
 
 module.exports = router;

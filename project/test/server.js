@@ -69,12 +69,22 @@ app.listen(port, host, () => {
 
 */
 
+
+
 const db = require('./db.js');
+
+const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
+
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'pug'));
 
 db();
+
+app.use(methodOverride());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.use(express.static(path.join(__dirname, 'html')));
 app.use('/', router);
