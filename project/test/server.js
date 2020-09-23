@@ -76,9 +76,10 @@ const db = require('./db.js');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 
-
+/*
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'pug'));
+*/
 
 db();
 

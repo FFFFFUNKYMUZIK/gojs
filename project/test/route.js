@@ -5,15 +5,17 @@ const router = express.Router();
 const User = require('./user.js');
 
 
-/*
+
 router.get('/', (req,res) =>{
 	res.sendFile(path.join(__dirname, 'html', 'main.html'));
 });
+
 router.get('/about', (req,res) =>{
 	res.sendFile(path.join(__dirname, 'html', 'about.html'));
 });
-*/
 
+
+/*
 router.get('/', (req, res) => {
   res.render('main'); // (3)
 });
@@ -21,9 +23,12 @@ router.get('/about', (req, res) => {
   res.render('about'); // (4)
 });
 
+
 router.get('/user/:name', (req, res) =>{
 	res.json({name : req.params.name});		
 });
+*/
+
 
 router.get('/:name', (req, res) =>{
 	console.log('request for username : ', req.params.name);
@@ -51,7 +56,7 @@ router.get('/:name', (req, res) =>{
 	
 })
 
-router.post('/user', (req, res) => {
+router.post('/:name', (req, res) => {
 	console.log('post request! ');
   User.create({ name: req.body.name }, (err, res) => {
     if (err) {
