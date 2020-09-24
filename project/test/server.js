@@ -69,6 +69,10 @@ app.listen(port, host, () => {
 
 */
 
+const session = require('express-session'); // 세션 설정
+const passport = require('passport');
+const passportConfig = require('./passport');
+
 
 
 const db = require('./db.js');
@@ -81,7 +85,13 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'pug'));
 */
 
+app.use(session({ secret: '비밀코드', resave: true, saveUninitialized: false })); // 세션 활성화
+app.use(passport.initialize()); // passport 구동
+app.use(passport.session()); // 세션 연결
+
 db();
+
+passportConfig();
 
 app.use(methodOverride());
 app.use(bodyParser.json());

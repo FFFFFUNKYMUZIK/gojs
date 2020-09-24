@@ -1,5 +1,7 @@
-<!DOCTYPE html>
 <!--
+
+<!DOCTYPE html>
+
 
 <html>
 <head>
@@ -55,14 +57,19 @@
 <body>
 <form id="get-form">
   <h4> get request </h4>
-  <input id="getbody" placeholder="getbody" value="practice.html" />
+  <input id="getbody" placeholder="getbody" value="practice" />
   <button id="getreq">req</button>
 </form>
 <form id="post-form">
-  <h4> put request </h4>
-  <input id="postbody" placeholder="postbody" />
+  <h4> post request(.json) </h4>
+  <input id="postbody" placeholder="postbody" value="{&quot;id&quot;:&quot;testid&quot;, &quot;pw&quot;:&quot;testpw&quot;}"/>
   <button id="postreq">req</button>
 </form>
+
+<h4> read from server(html) :<br></h4>
+<article></article>
+
 <script src="client.js"></script>
 </body>
 </html>
+
