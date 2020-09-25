@@ -1,12 +1,3 @@
-/*
-const mongoose = require('mongoose');
-const userSchema = new mongoose.Schema({
-	name: String,
-	data: Object,
-});
-module.exports = mongoose.model('User', userSchema);
-*/
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -15,9 +6,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.comparePassword = function(inputPassword, cb) {
-	console.log('compare password');
-	console.log(inputPassword);
-	console.log(this.pw);
+	console.log('authentication...');
   if (inputPassword === this.pw) {
     cb(null, true);
   } else {
@@ -25,4 +14,4 @@ userSchema.methods.comparePassword = function(inputPassword, cb) {
   }
 };
 
-module.exports = mongoose.model('users', userSchema, 'users');
+module.exports = mongoose.model('users', userSchema);
