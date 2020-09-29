@@ -23,6 +23,7 @@ document.getElementById('register-form').onsubmit = function (e) {
       pw : pwbody,
     })
 	}).then(function(res) {   
+    console.log(res);
 		return res.text().then(function(text){
       document.write(text);         
     });
@@ -58,6 +59,13 @@ document.getElementById('login-form').onsubmit = function (e) {
       pw : pwbody,
     })
 	}).then(function(res) {
+
+      return res.text().then(function(text){
+      document.write(text);   
+    });
+  });
+
+/*
 		return res.json(); //promise
 	}).then((json) =>{
 
@@ -67,5 +75,6 @@ document.getElementById('login-form').onsubmit = function (e) {
 		console.log(JSON.stringify(json));
 		console.log(typeof JSON.stringify(json)); //string
 	});
+*/
 
 };

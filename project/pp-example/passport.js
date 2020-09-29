@@ -3,15 +3,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const Users = require('./user');
 
 module.exports = () => {
-  passport.serializeUser((user, done) => { // Strategy 성공 시 호출됨
+  passport.serializeUser((user, done) => { // Strategy 성공 시 호출됨, 로그인 성공 시 단 한번
     console.log('serialize');
-    done(null, user.id); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
+    done(null, user.id); // 세션에 user.id 저장
   });
 
-  passport.deserializeUser((user, done) => { // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
-    console.log('deserialize');
-    Users.findOne({ id: user }, (err, user) => {
-      done(null, user); // 여기의 user가 req.user가 됨
+  passport.deserializeUser((user, done) => { // serializeUser에서 세션에 저장한 id값이 user 변수로 들어옴 
+    console.log('deserialize'); 
+    Users.findOne({ id: user }, (err, user) => { //검색
+      done(null, user); // 찾은 후 찾은 객체를 req.user 변수에 저장해줌
     });
   });
 

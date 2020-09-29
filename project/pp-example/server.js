@@ -22,7 +22,6 @@ const connectdb = require('./db.js');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 
-
 app.use(session({
 	secret: 'encryption-code',
 	resave: false,
@@ -30,8 +29,11 @@ app.use(session({
 	})
 ); 
 
+/*
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
+*/
+
 
 connectdb();
 
