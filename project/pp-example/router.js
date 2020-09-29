@@ -29,7 +29,8 @@ router.get('/session-debug', (req,res) =>{
 })
 
 router.get('/login', (req,res) =>{
-	res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
+	//res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
+	res.sendFile(path.join(__dirname, 'client', 'html','example.html'));
 })
 
 router.get('/practice', (req,res) =>{
@@ -42,7 +43,14 @@ router.get('/practice', (req,res) =>{
     } else {
         res.redirect('/login');
     }
+});
+
+router.get('/image/:img', (req, res)=>{
+	res.sendFile(path.join(__dirname, 'image', req.params.img));
 })
+
+
+
 
 router.post('/register', (req,res) =>{
 

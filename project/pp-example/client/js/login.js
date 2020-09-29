@@ -51,6 +51,7 @@ document.getElementById('login-form').onsubmit = function (e) {
 
   fetch('/login', {
    	method: 'POST',
+    redirect: 'follow',
 	 	headers: {
 	   'Content-Type': 'application/json'
   	},
@@ -60,9 +61,12 @@ document.getElementById('login-form').onsubmit = function (e) {
     })
 	}).then(function(res) {
 
+    console.log(res);
+    /*
       return res.text().then(function(text){
       document.write(text);   
     });
+    */
   });
 
 /*
