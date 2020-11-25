@@ -7,13 +7,13 @@ document.getElementById('logout-form').onsubmit = function (e) {
 	   'Content-Type': 'application/json'
   	},
   	body : JSON.stringify({
-    })
+    }),
+    redirect: 'follow'
 	})
-/*
-  .then(function(res) {
-		return res.json(); //promise
-	}).then((json) =>{
-		
-	});
-*/
+  .then((res) =>{
+      if (res.redirected){
+        /* manual redirect */
+        window.location.href = res.url;
+      }
+  })
 };

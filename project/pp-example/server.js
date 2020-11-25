@@ -30,14 +30,14 @@ app.use(session({
 ); 
 
 /*
+
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
+passportConfig();
 */
-
 
 connectdb();
 
-passportConfig();
 
 app.use(methodOverride()); //for post, put, delete, patch
 app.use(bodyParser.json()); //json parsing (to object) and save to req.body

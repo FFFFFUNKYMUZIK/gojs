@@ -7,9 +7,9 @@ const Users = require('./user.js');
 router.get('/', (req,res) =>{
 	sID = req.session.sessionID;
 
-	 if (sID)       //세션 ID가 있다면
+	   if (sID)       //세션 ID가 있다면
      {
-     	res.redirect('/practice');
+     	  res.redirect('/practice');
      }
      else
      {
@@ -29,7 +29,13 @@ router.get('/session-debug', (req,res) =>{
 })
 
 router.get('/login', (req,res) =>{
-	res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
+  sID = req.session.sessionID;
+
+  if (sID) {
+       res.redirect('practice');
+  } else {
+       res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
+  }
 })
 
 router.get('/practice', (req,res) =>{
@@ -44,24 +50,30 @@ router.get('/practice', (req,res) =>{
     }
 })
 
+router.get('/practice2', (req,res) =>{
+  
+  sID = req.session.sessionID;
+  console.log('sID', sID);
+
+  if (sID) {
+        res.sendFile(path.join(__dirname, 'client', 'html','practice2.html'));
+    } else {
+        res.redirect('/login');
+    }
+})
+
 router.post('/register', (req,res) =>{
 
-	console.log(1);
-
 	Users.findOne({ id: req.body.id }, (findError, user) => {
-		console.log(2);
       	if (findError) {
-      		console.log(3);
         	return;
       	}
       	
       	if (user){
-      		console.log(4);
       		res.redirect('/login');
       		return;
       	}
 
-      	console.log(5);
       	const reg_user = new Users();
 
 		reg_user.id = req.body.id;
@@ -81,11 +93,14 @@ router.post('/login', (req,res) =>{
 		Users.findOne({ id: req.body.id }, (findError, user) => {
       	if (findError) {
         	console.log('db error');
-        	next(findError);
+        	/*next(findError);*/
+          return;
       	}
+
       	if (!user){
         	console.log('no user');
         	res.redirect('/login');
+          return;
       	}
       	
       	if (user.pw === req.body.pw){
@@ -98,15 +113,12 @@ router.post('/login', (req,res) =>{
       	}
       });
 
-	console.log('5');
 });
 
 router.post('/logout', (req, res) =>{
-       
     req.session.destroy();
-    console.log(`session을 삭제하였습니다.`);
-    res.redirect(`/login`);
-
+    console.log('session is deleted.');
+    res.redirect('/');
 });
 
 

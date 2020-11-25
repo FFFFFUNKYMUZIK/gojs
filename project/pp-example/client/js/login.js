@@ -37,9 +37,6 @@ document.getElementById('login-form').onsubmit = function (e) {
   const idbody = document.getElementById('id-input2').value;
   const pwbody = document.getElementById('pw-input2').value;
 
-  console.log(idbody);
-  console.log(pwbody);
-
   if (!(idbody && idbody.trim())){
     alert('id empty');
     return;
@@ -57,13 +54,24 @@ document.getElementById('login-form').onsubmit = function (e) {
   	body : JSON.stringify({
       id : idbody,
       pw : pwbody,
-    })
-	}).then(function(res) {
+    }),
+    redirect: 'follow'
+	})
+  .then((res) =>{
+      if (res.redirected){
+        /* manual redirect */
+        window.location.href = res.url;
+      }
+  });
 
+  /*
+  .then(function(res) {
       return res.text().then(function(text){
       document.write(text);   
     });
   });
+  */
+  
 
 /*
 		return res.json(); //promise
