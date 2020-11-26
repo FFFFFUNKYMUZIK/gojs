@@ -1,25 +1,28 @@
 const exp = require('express');
 const path = require('path');
 const router = exp.Router();
-//const passport = require('passport');
+const passport = require('passport');
 const Users = require('./user.js');
 
-router.get('/', (req,res) =>{
-	sID = req.session.sessionID;
+/* crypto func */
+const {encrypt, decrypt} = require('./crypto');
 
-	   if (sID)       //세션 ID가 있다면
-     {
-     	  res.redirect('/practice');
-     }
-     else
-     {
-        res.redirect('/login');
-     }
-})
+/* redirect to login page for who is not authenticated */
+const isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/login');
+};
 
+/* favicon request */
 router.get('/favicon.ico', (req, res) =>{
-	res.sendFile(path.join(__dirname, 'image', 'favicon.ico'));
+  res.sendFile(path.join(__dirname, 'image', 'favicon.ico'));
 })
+
+router.get('/', isAuthenticated, (req,res) =>{
+	 res.redirect('/practice');
+})
+
 
 router.get('/session-debug', (req,res) =>{
 	res.json({
@@ -28,98 +31,71 @@ router.get('/session-debug', (req,res) =>{
   })
 })
 
-router.get('/login', (req,res) =>{
-  sID = req.session.sessionID;
 
-  if (sID) {
-       res.redirect('practice');
-  } else {
-       res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
+router.get('/login', (req,res, next) =>{
+  if (req.isAuthenticated()){
+    res.redirect('/practice');
+    return next();
   }
+
+  const msg = req.flash('error');
+  res.sendFile(path.join(__dirname, 'client', 'html','main.html'));
 })
 
-router.get('/practice', (req,res) =>{
-	
-	sID = req.session.sessionID;
-	console.log('sID', sID);
-
-	if (sID) {
-        res.sendFile(path.join(__dirname, 'client', 'html','practice.html'));
-    } else {
-        res.redirect('/login');
-    }
+router.get('/practice', isAuthenticated, (req,res) =>{
+	  res.sendFile(path.join(__dirname, 'client', 'html','practice.html'));
 })
 
-router.get('/practice2', (req,res) =>{
+router.get('/practice2', isAuthenticated, (req,res) =>{
+    res.sendFile(path.join(__dirname, 'client', 'html','practice2.html')); 
+})
+
+router.get('/logout', isAuthenticated, (req, res) =>{
+    req.logout();
+    console.log('[passport] logout');
+    res.redirect('/login');
+});
+
+router.post('/register', (req,res, next) =>{
   
-  sID = req.session.sessionID;
-  console.log('sID', sID);
+  Users.findOne({ id: req.body.id }, (findError, user) => {
+      	if (findError) {
+          throw findError;
+      	}
+      	
+      	if (user)
+          return user;
 
-  if (sID) {
-        res.sendFile(path.join(__dirname, 'client', 'html','practice2.html'));
-    } else {
+        return undefined;
+  })
+  .then( (user)=>{
+      if (user){
+        req.flash('error', '이미 존재하는 아이디입니다')
         res.redirect('/login');
-    }
+      }
+      else{
+        const reg_user = new Users();
+
+        reg_user.id = req.body.id;
+        reg_user.pw = encrypt(req.body.pw);
+        reg_user.save();
+
+        console.log(`user ${req.body.id} is added!`);
+
+        req.flash('error', '가입 완료되었습니다 : ' + req.body.id);
+        res.redirect('/login');
+      }
+    })
+  .catch(err => alert(err));
+
 })
 
-router.post('/register', (req,res) =>{
-
-	Users.findOne({ id: req.body.id }, (findError, user) => {
-      	if (findError) {
-        	return;
-      	}
-      	
-      	if (user){
-      		res.redirect('/login');
-      		return;
-      	}
-
-      	const reg_user = new Users();
-
-		reg_user.id = req.body.id;
-		reg_user.pw = req.body.pw;
-		reg_user.save();
-
-		console.log(`user ${req.body.id} is added!`);
-      });
-
-	res.redirect('/login');
-})
-
-router.post('/login', (req,res) =>{
-
-	//passport.authenticate('local', {failureRedirect:'/'});
-
-		Users.findOne({ id: req.body.id }, (findError, user) => {
-      	if (findError) {
-        	console.log('db error');
-        	/*next(findError);*/
-          return;
-      	}
-
-      	if (!user){
-        	console.log('no user');
-        	res.redirect('/login');
-          return;
-      	}
-      	
-      	if (user.pw === req.body.pw){
-      		req.session.sessionID = user.id;
-      		console.log('session is saved for ', user.id);
-      		res.redirect('/practice');
-      	}
-      	else{
-      		res.redirect('/login');
-      	}
-      });
-
-});
-
-router.post('/logout', (req, res) =>{
-    req.session.destroy();
-    console.log('session is deleted.');
-    res.redirect('/');
-});
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/practice',
+    failureRedirect: '/login',
+    failureFlash: true
+  })
+);
 
 
 

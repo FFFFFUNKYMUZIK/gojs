@@ -1,3 +1,23 @@
+  const ajax_render = async (res) => {
+    try {
+      const contentType = res.headers.get('content-type');
+
+      if (contentType?.includes('application/json')) {
+        const json = await res.json();
+        if (json.content){
+          document.getElementById('json-body').innerHTML = `<h1>${json.title}</h1><p>${json.content}</p>`;
+        }
+        if (json.message){
+          alert(json.message);
+        }
+      } else {
+        res.innerHTML = await res.text();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 document.getElementById('register-form').onsubmit = function (e) {
   e.preventDefault();
 
@@ -21,12 +41,16 @@ document.getElementById('register-form').onsubmit = function (e) {
     body : JSON.stringify({
       id : idbody,
       pw : pwbody,
-    })
+    }),
+    redirect: 'follow'
 	}).then(function(res) {   
-    console.log(res);
-		return res.text().then(function(text){
-      document.write(text);         
-    });
+      if (res.redirected){
+        /* manual redirect */
+        window.location.href = res.url;
+      }
+      else{
+        ajax_render(res);
+      }
 	});
   
 };
@@ -58,9 +82,15 @@ document.getElementById('login-form').onsubmit = function (e) {
     redirect: 'follow'
 	})
   .then((res) =>{
-      if (res.redirected){
+
+    console.log(res);
+
+     if (res.redirected){
         /* manual redirect */
         window.location.href = res.url;
+      }
+      else{
+        ajax_render(res);
       }
   });
 
